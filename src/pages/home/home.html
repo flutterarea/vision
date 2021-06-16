@@ -1,14 +1,50 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
+<ion-content>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <div class="icons-overlay">
+    <div (click)="getPicture()" *ngIf="!web" class="image-button-camera">
+      <img src="https://png.icons8.com/realtime/nolan/60">
+      <p>scan</p>
+    </div>
+    <div (click)="setFlashOn()" *ngIf="!web && flash == 'off'" class="image-button-flash-off">
+      <img src="https://png.icons8.com/light-on/nolan/60/FFFFFF" >
+      <p>flash off</p>
+    </div>
+    <div (click)="setFlashOff()" *ngIf="!web && flash == 'on'" class="image-button-flash-on">
+      <img src="https://png.icons8.com/light-on/nolan/60/FFFFFF">
+      <p>flash on</p>
+    </div>
+    <div (click)="closeResults()" *ngIf="web" class="image-button-close">
+      <img src="https://png.icons8.com/refresh/nolan/60">
+      <p>back</p>
+    </div>
+  </div>
+
+  <div class="results-list" *ngIf="web">
+
+    <!-- Landmark Map -->
+    <div *ngIf="land">
+      <h5 class="p20">{{land[0].description}}</h5>
+      <div #map id="map"></div>
+    </div>
+
+    <!-- Logo -->
+    <div *ngIf="logo">
+      <h5 class="p20">{{logo[0].description}}</h5>
+    </div>
+
+    <!-- Web -->
+    <div>
+      <h3 class="p20">Web results</h3>
+      <ion-list>
+        <ion-item *ngFor="let s of searchData" (click)="goToUrl(s.formattedUrl)"  class="results-list-item">
+          <ion-avatar item-start>
+            <img *ngIf="s.pagemap.cse_thumbnail?.length > 0" src="{{s.pagemap.cse_thumbnail[0].src}}">
+          </ion-avatar>
+          <h2>{{s.title}}</h2>
+          <p>{{s.snippet}}</p>
+        </ion-item>
+      </ion-list>
+    </div>
+
+  </div>
 </ion-content>
